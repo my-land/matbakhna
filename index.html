@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matbakhna - مطبخنه</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Baloo+Bhaijaan+2:wght@400..800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Definizione delle variabili di colore Material 3 */
+        :root {
+            --md-navy: #0A192F;
+            --md-orange: #FF6D00;
+            --md-surface: #FAF9F6;
+        }
+        body {
+            font-family: 'Baloo Bhaijaan 2', 'Fredoka', sans-serif;
+            background-color: var(--md-surface);
+            color: var(--md-navy);
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Stile delle card M3 */
+        .m3-card {
+            border-radius: 28px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            border: 1px solid rgba(10, 25, 47, 0.05);
+        }
+        .m3-card:active {
+            transform: scale(0.97);
+        }
+        .hidden { display: none !important; }
+        ::-webkit-scrollbar { width: 0px; }
+        
+        /* Animazione di scorrimento verso l'alto */
+        @keyframes slide-up {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-m3 { animation: slide-up 0.5s cubic-bezier(0.05, 0.7, 0.1, 1); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center px-6 py-8">
+
+    <!-- Overlay di scadenza abbonamento -->
+    <div id="expiration-overlay" class="fixed inset-0 hidden flex flex-col items-center justify-center p-8 text-center bg-[#FAF9F6] z-[9999]">
+        <div class="bg-white p-10 rounded-[40px] border border-red-100 flex flex-col items-center max-w-sm shadow-xl">
+            <div class="w-20 h-20 bg-red-50 text-red-600 rounded-full flex items-center justify-center mb-6">
+                <i data-lucide="calendar-x" size="40"></i>
+            </div>
+            <h2 class="text-2xl font-black mb-2">Scadenza Pagina</h2>
+            <p class="text-gray-500 mb-8 text-sm leading-relaxed">Contattare LanLink per rinnovare il servizio.</p>
+            <a id="whatsapp-renewal-link" href="#" class="w-full py-4 bg-[#0A192F] text-white rounded-2xl font-bold shadow-lg active:scale-95 transition-all">
+                Rinnuova Ora
+            </a>
+        </div>
+    </div>
+
+    <!-- Contenuto Principale -->
+    <div id="main-content" class="w-full max-w-sm flex flex-col items-center">
+        
+        <!-- Selettore Lingua -->
+        <div class="w-full flex justify-center p-1 bg-[#E2E7F0] rounded-full mb-10 border border-white/50 shadow-sm">
+            <button onclick="setLanguage('ar')" id="btn-ar" class="flex-1 py-2 rounded-full text-sm font-bold transition-all bg-[#0A192F] text-white shadow-md">العربية</button>
+            <button onclick="setLanguage('fa')" id="btn-fa" class="flex-1 py-2 rounded-full text-sm font-bold transition-all text-[#0A192F]/60">فارسی</button>
+            <button onclick="setLanguage('en')" id="btn-en" class="flex-1 py-2 rounded-full text-sm font-bold transition-all text-[#0A192F]/60">English</button>
+        </div>
+
+        <!-- Intestazione -->
+        <header class="flex flex-col items-center text-center mb-10 animate-m3">
+            <div class="relative w-32 h-32 bg-white rounded-[32px] shadow-2xl flex items-center justify-center overflow-hidden border-4 border-white ring-1 ring-black/5">
+                <img src="https://cdn.jsdelivr.net/gh/my-land/matbakhna@main/mb-logo.jpg" alt="Matbakhna Logo" class="w-full h-full object-cover">
+            </div>
+            <h1 class="text-3xl font-black mt-6 tracking-tight text-[#0A192F]" id="txt-title">مطبخنه</h1>
+            <div class="mt-2 inline-flex items-center gap-1.5 px-3 py-1 bg-[#FF6D00]/10 text-[#FF6D00] rounded-full text-[10px] font-bold uppercase tracking-widest border border-[#FF6D00]/20" id="txt-badge">
+                <i data-lucide="star" size="12" fill="currentColor"></i>
+                <span>Premium Quality</span>
+            </div>
+            <p class="mt-5 text-[#0A192F]/60 text-base font-medium leading-relaxed max-w-[280px]" id="txt-subtitle">
+                معلم طهي يجسد التميز والفخامة في عالم الطعام
+            </p>
+        </header>
+
+        <!-- Azioni -->
+        <div class="w-full flex flex-col gap-4 animate-m3" style="animation-delay: 0.1s">
+            
+            <!-- Sezione WhatsApp -->
+            <div class="m3-card p-6 shadow-sm border-b-4 border-[#FF6D00]">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2 bg-[#FF6D00]/10 text-[#FF6D00] rounded-xl">
+                        <i data-lucide="message-circle" size="24"></i>
+                    </div>
+                    <span class="text-sm font-bold opacity-70" id="txt-wa-label">تواصل معنا عبر واتساب</span>
+                </div>
+                
+                <div class="flex flex-col gap-3">
+                    <a href="https://wa.me/9647807152460" target="_blank" class="flex items-center justify-between p-4 bg-[#0A192F] text-white rounded-2xl shadow-lg active:scale-95 transition-all">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="send" size="20"></i>
+                            <span class="font-bold text-lg" id="btn-wa-msg">مراسلة فورية</span>
+                        </div>
+                        <i class="icon-dir" data-lucide="chevron-left" size="20"></i>
+                    </a>
+                    
+                    <a href="tel:07807152460" class="flex items-center justify-between p-4 bg-white border-2 border-[#0A192F]/10 rounded-2xl text-[#0A192F] active:bg-[#0A192F]/5 transition-all">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="phone" size="20"></i>
+                            <span class="font-bold text-lg" id="btn-wa-call">اتصال مباشر</span>
+                        </div>
+                        <span class="font-mono text-sm opacity-50">07807152460</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Social Media Grid -->
+            <div class="grid grid-cols-2 gap-4">
+                <a href="https://www.instagram.com/9.6z5/" target="_blank" class="m3-card p-5 flex flex-col items-center gap-2 hover:bg-[#FAF9F6] transition-colors">
+                    <i data-lucide="instagram" class="text-[#FF6D00]" size="28"></i>
+                    <span class="text-xs font-bold opacity-80" id="btn-insta">إنستغرام</span>
+                </a>
+                <a href="https://www.facebook.com/najaf.matbakhna/" target="_blank" class="m3-card p-5 flex flex-col items-center gap-2 hover:bg-[#FAF9F6] transition-colors">
+                    <i data-lucide="facebook" class="text-blue-600" size="28"></i>
+                    <span class="text-xs font-bold opacity-80" id="btn-fb">فيسبوك</span>
+                </a>
+            </div>
+
+            <!-- Posizione -->
+            <a href="https://maps.app.goo.gl/Wv4i3K6M9m6H1L8R9" target="_blank" class="m3-card p-5 flex items-center gap-4 group">
+                <div class="bg-[#0A192F] p-3 rounded-2xl text-white">
+                    <i data-lucide="map-pin" size="24"></i>
+                </div>
+                <div class="flex-1">
+                    <span class="block text-[10px] font-bold text-[#FF6D00] uppercase tracking-widest mb-0.5" id="txt-addr-label">الموقع</span>
+                    <span class="text-sm font-bold leading-tight text-[#0A192F]" id="txt-address">مطعم مطبخنه، النجف، العراق</span>
+                </div>
+                <i class="icon-dir opacity-20" data-lucide="chevron-left" size="20"></i>
+            </a>
+
+        </div>
+
+        <!-- Pié de pagina -->
+        <footer class="mt-16 flex flex-col items-center gap-4 text-center pb-10">
+            <div class="text-[#0A192F]/40 text-[10px] font-bold flex items-center gap-2 uppercase tracking-[2px]">
+                 <span>Matbakhna</span>
+                 <span class="w-1 h-1 rounded-full bg-[#FF6D00]"></span>
+                 <span>2026</span>
+            </div>
+            
+            <a href="https://my-land.github.io/lanlink/" target="_blank" class="group flex flex-col items-center gap-1 transition-opacity hover:opacity-80">
+                <div class="text-[9px] text-gray-400 font-bold uppercase tracking-widest opacity-60 group-hover:opacity-100" id="txt-referral">
+                    تريد صفحة مثل هذه؟ اطلبها من LanLink
+                </div>
+                <div class="text-xs font-black text-[#FF6D00] border-b border-[#FF6D00]/20 pb-0.5" id="txt-copy">
+                    جميع الحقوق محفوظة © LanLink
+                </div>
+            </a>
+        </footer>
+    </div>
+
+    <script>
+        // Configurazione data di scadenza e numero supporto
+        const EXPIRATION_DATE = new Date('2026-02-28T23:59:59');
+        const SUPPORT_WHATSAPP = "989358185552";
+
+        const TRANSLATIONS = {
+            ar: {
+                title: "مطبخنه", subtitle: "معلم طهي يجسد التميز والفخامة في عالم الطعام", badge: "جودة متميزة",
+                waLabel: "تواصل معنا عبر واتساب", waMsg: "مراسلة فورية", waCall: "اتصال مباشر",
+                fb: "فيسبوك", insta: "إنستغرام", addrLabel: "الموقع", address: "مطعم مطبخنه، النجف، العراق",
+                lanlink: "تريد صفحة مثل هذه؟ اطلبها من LanLink", copy: "جميع الحقوق محفوظة © LanLink", dir: "rtl"
+            },
+            fa: {
+                title: "مطبخنه", subtitle: "تجلی‌گر تمایز و شکوه در دنیای هنر آشپزی", badge: "کیفیت ممتاز",
+                waLabel: "ارتباط از طریق واتس‌اپ", waMsg: "پیام فوری", waCall: "تماس مستقیم",
+                fb: "فیس‌بوک", insta: "اینستاگرام", addrLabel: "آدرس", address: "نجف، عراق - رستوران مطبخنه",
+                lanlink: "صفحه اختصاصی می‌خواهید؟ از LanLink سفارش دهید", copy: "تمامی حقوق محفوظ است © LanLink", dir: "rtl"
+            },
+            en: {
+                title: "Matbakhna", subtitle: "A culinary master embodying excellence and luxury", badge: "Premium Quality",
+                waLabel: "Connect on WhatsApp", waMsg: "Instant Message", waCall: "Direct Call",
+                fb: "Facebook", insta: "Instagram", addrLabel: "Location", address: "Matbakhna Restaurant, Najaf, Iraq",
+                lanlink: "Want a page like this? Order on LanLink", copy: "Copyright © LanLink", dir: "ltr"
+            }
+        };
+
+        // Verifica lo stato dell'abbonamento
+        function checkSubscription() {
+            if (new Date() > EXPIRATION_DATE) {
+                document.getElementById('main-content').classList.add('hidden');
+                document.getElementById('expiration-overlay').classList.remove('hidden');
+                document.getElementById('whatsapp-renewal-link').href = `https://wa.me/${SUPPORT_WHATSAPP}`;
+                return true;
+            }
+            return false;
+        }
+
+        // Gestione cambio lingua
+        function setLanguage(lang) {
+            const t = TRANSLATIONS[lang];
+            document.documentElement.dir = t.dir;
+            document.documentElement.lang = lang;
+
+            document.getElementById('txt-title').innerText = t.title;
+            document.getElementById('txt-subtitle').innerText = t.subtitle;
+            document.getElementById('txt-badge').querySelector('span').innerText = t.badge;
+            document.getElementById('txt-wa-label').innerText = t.waLabel;
+            document.getElementById('btn-wa-msg').innerText = t.waMsg;
+            document.getElementById('btn-wa-call').innerText = t.waCall;
+            document.getElementById('btn-fb').innerText = t.fb;
+            document.getElementById('btn-insta').innerText = t.insta;
+            document.getElementById('txt-addr-label').innerText = t.addrLabel;
+            document.getElementById('txt-address').innerText = t.address;
+            document.getElementById('txt-referral').innerText = t.lanlink;
+            document.getElementById('txt-copy').innerText = t.copy;
+
+            ['ar', 'fa', 'en'].forEach(l => {
+                const btn = document.getElementById(`btn-${l}`);
+                if (l === lang) {
+                    btn.classList.add('bg-[#0A192F]', 'text-white', 'shadow-md');
+                    btn.classList.remove('text-[#0A192F]/60');
+                } else {
+                    btn.classList.remove('bg-[#0A192F]', 'text-white', 'shadow-md');
+                    btn.classList.add('text-[#0A192F]/60');
+                }
+            });
+
+            const icons = document.querySelectorAll('.icon-dir');
+            icons.forEach(icon => {
+                icon.setAttribute('data-lucide', t.dir === 'rtl' ? 'chevron-left' : 'chevron-right');
+            });
+
+            lucide.createIcons();
+        }
+
+        // Inizializzazione della pagina
+        if (!checkSubscription()) {
+            setLanguage('ar');
+        } else {
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
